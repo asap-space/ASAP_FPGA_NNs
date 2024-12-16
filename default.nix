@@ -6,6 +6,8 @@ in pkgs.mkShell {
       python-pkgs.matplotlib
       python-pkgs.pytorch
       python-pkgs.torchvision
+      python-pkgs.onnx
+      python-pkgs.onnxruntime
     ]))
   ];
 }
