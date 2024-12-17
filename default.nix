@@ -9,5 +9,6 @@ in pkgs.mkShell {
       python-pkgs.onnx
       python-pkgs.onnxruntime
     ]))
+    protobuf
   ];
 }
