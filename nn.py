@@ -11,8 +11,7 @@ class LogisticNet(nn.Module):
         self.act1 = nn.Softmax(dim=1)
 
     def forward(self, input):
-        p1 = self.pol1(input)
-        p1 = torch.flatten(p1, 1)
+        p1 = torch.flatten(self.pol1(input), 1)
         s1 = self.fc1(p1)
         output = self.act1(s1)
         return output
@@ -58,8 +57,26 @@ def load_dataset():
     return training_dataset_loader, test_dataset_loader
 
 
-net = LogisticNet()
-print(net)
-params = list(net.parameters())
-print(len(params))
-print(params[0].size())
+def export_ONNX(model):
+    tensor_x = torch.rand((1, 1, 32, 16, 32), dtype=torch.float32)
+    torch.onnx.export(
+        model,
+        (tensor_x,),
+        "my_model.onnx",  # filename of the ONNX model
+        input_names=["input"],  # Rename inputs for the ONNX model
+        dynamo=False,  # True or False to select the exporter to use
+    )
+
+
+def main():
+    net = LogisticNet()
+    print(net)
+    params = list(net.parameters())
+    # print(len(params))
+    # print(params[0].size())
+    print(params)
+    export_ONNX(net)
+
+
+if __name__ == "__main__":
+    main()
