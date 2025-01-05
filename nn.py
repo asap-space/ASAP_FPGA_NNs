@@ -1,3 +1,4 @@
+import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -66,9 +67,22 @@ def export_ONNX(model):
         input_names=["input"],  # Rename inputs for the ONNX model
         dynamo=False,  # True or False to select the exporter to use
     )
+    return
+
+
+def usage(possible_NN):
+    string = f"""
+    nn.py usage:
+      python3 nn.py {possible_NN}
+    """
+    return
 
 
 def main():
+    possible_NN = ["Baseline", "Reduced", "Logistic"]
+    if (len(sys.argv) != 2) or sys.argv[-1] not in possible_NN:
+        usage(possible_NN)
+        exit(-1)
     net = LogisticNet()
     print(net)
     params = list(net.parameters())
@@ -76,6 +90,7 @@ def main():
     # print(params[0].size())
     print(params)
     export_ONNX(net)
+    exit()
 
 
 if __name__ == "__main__":
