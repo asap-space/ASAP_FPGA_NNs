@@ -62,7 +62,7 @@ def export_ONNX(model):
     torch.onnx.export(
         model,
         (tensor_x,),
-        "my_model.onnx",  # filename of the ONNX model
+        f"ONNX_model/{model.__class__.__name__}.onnx",  # filename of the ONNX model
         input_names=["input"],  # Rename inputs for the ONNX model
         dynamo=False,  # True or False to select the exporter to use
     )
