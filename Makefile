@@ -11,7 +11,7 @@ convert_model:
 	python3 NetGen.py $(NN)
 
 build_model: convert_model
-	onnx2c/build/onnx2c ONNX_model/$(NN)Net.onnx >> C_model/$(NN)Net.c
+	onnx2c/build/onnx2c ONNX_model/$(NN)Net.onnx > C_model/$(NN)Net.c
 
 clean:
 	rm -f ONNX_model/$(NN).onnx C_model/$(NN).c
