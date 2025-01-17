@@ -1,1 +1,5 @@
 .DS_Store
+
+# Generated files
+*.onnx
+ONNX2HLS_flow/C_model/*.c
