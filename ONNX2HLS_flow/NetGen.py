@@ -4,6 +4,10 @@ import torch.nn as nn
 import torch.optim as optim
 
 
+# Setting seeds for reproducibility
+seed = 84
+torch.manual_seed(seed)
+
 class LogisticNet(nn.Module):
     def __init__(self):
         super(LogisticNet, self).__init__()
@@ -116,7 +120,7 @@ def load_pretrained_weights(net, weight_file):
         raise FileNotFoundError(f"Weight file not found: {weight_file}")
 
     try:
-        net.load_state_dict(torch.load(weight_file, weights_only=True, map_location=torch.device('cpu')))
+        net.load_state_dict(torch.load("test.pth", weights_only=True, map_location=torch.device('cpu')))
     except RuntimeError as e:
         raise RuntimeError(f"Error loading weights: {e}")
 
@@ -234,7 +238,7 @@ def main():
     if "--pretrained_weights" in sys.argv:
         weight_file = sys.argv[sys.argv.index("--pretrained_weights") + 1]
         print(f"Using pre-trained weights from: {weight_file}")
-        #load_pretrained_weights(net, weight_file)
+        load_pretrained_weights(net, weight_file)
 
     compare_net = torch.load(weight_file, map_location=torch.device('cpu'))
     print(compare_net)
@@ -243,6 +247,7 @@ def main():
     # print(len(params))
     # print(params[0].size())
     print(params)
+    torch.save(net.state_dict(), f"PreTrained_Weights/{net.__class__.__name__}_{seed}.pth")
     export_ONNX(net)
     exit()
 
