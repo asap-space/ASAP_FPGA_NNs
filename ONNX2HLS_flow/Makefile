@@ -1,6 +1,6 @@
 NN := Logistic
 SEED := 84
-PRETRAIMED_WEIGHTS := --pretrained_weights PreTrained_Weights/$(NN)_$(SEED).pth
+PRETRAIMED_WEIGHTS := --pretrained_weights ../PreTrained_Weights/$(NN)_$(SEED).pth
 
 .PHONY: all convert_model build_model clean ensure_dirs
 
