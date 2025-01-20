@@ -120,7 +120,7 @@ def load_pretrained_weights(net, weight_file):
         raise FileNotFoundError(f"Weight file not found: {weight_file}")
 
     try:
-        net.load_state_dict(torch.load("test.pth", weights_only=True, map_location=torch.device('cpu')))
+        net.load_state_dict(torch.load(weight_file, weights_only=True, map_location=torch.device('cpu')))
     except RuntimeError as e:
         raise RuntimeError(f"Error loading weights: {e}")
 
