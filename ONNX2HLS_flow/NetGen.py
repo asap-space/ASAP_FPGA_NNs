@@ -96,6 +96,12 @@ def test():
     # TO DO
     return
 
+from spacepy import pycdf
+def create_dataset():
+    # Para testar usar as labels no repositorio do https://bitbucket.org/volshevsky/mmslearning para dezembro
+    cdf = pycdf.CDF('../data/mms1_fpi_fast_l2_dis-dist_20171201180000_v3.4.0.cdf')
+    cdf['mms1_dis_dist_fast']
+
 
 def load_dataset():
     # TO DO

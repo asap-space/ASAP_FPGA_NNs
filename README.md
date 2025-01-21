@@ -4,7 +4,8 @@
 python3 -m venv pyenv
 source pyenv/bin/activate
 pip install --upgrade pip # (optional)
-pip install onnx onnxscript onnxruntime torch torchvision matplotlib brevitas
+pip install onnx onnxscript onnxruntime torch torchvision matplotlib brevitas 
+pip install requests pandas spacepy # For data
 ```
 
 # References

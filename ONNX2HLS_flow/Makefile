@@ -18,5 +18,11 @@ convert_model:
 build_model: convert_model onnx2c/build/onnx2c
 	onnx2c/build/onnx2c ONNX_model/$(NN)Net.onnx > C_model/$(NN)Net.c
 
+BASE_URL = https://lasp.colorado.edu/mms/sdc/public/files/api/v1/download/science
+DATA_SET = ../datasets/dataset_dec_2017_12_clean.csv
+DST_DIR = ../data
+data:
+	python3 ../get_data.py $(DATA_SET) $(BASE_URL) $(DST_DIR)
+
 clean:
 	rm -f ONNX_model/$(NN).onnx C_model/$(NN).c
