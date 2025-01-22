@@ -1,4 +1,4 @@
-#include "C_model/LogisticNet.c"
+#include "HLS_model/LogisticNet.c"
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -73,8 +73,8 @@ int main(int argc, char **argv) {
   size_t numLabels = 0;
 
   uint8_t *labels =
-      read_labels("data_binary/labels_20171201180000.bin", &numLabels);
-  float *data = read_data("data_binary/mms1_dis_dist_fast_20171201180000_0.bin",
+      read_labels("data_binary/20171209060000/labels_20171209060000.bin", &numLabels);
+  float *data = read_data("data_binary/20171209060000/mms1_dis_dist_fast_20171209060000_0.bin",
                           &numFloats);
 
   if (numFloats != 32 * 16 * 32) {
@@ -93,15 +93,14 @@ int main(int argc, char **argv) {
       }
       printf("\n");
   }
-  */
   for (size_t i = 0; i < numLabels; i++) {
     printf("Label %zu: %u\n", i, labels[i]);
   }
+  */
 
   float(*input_tensor)[1][32][16][32] = (float(*)[1][32][16][32])data;
   float(*output_tensor)[4] = (float(*)[4])malloc(4 * sizeof(float));
   entry(input_tensor, output_tensor);
-  printf("DEBUG.\n");
   float max = 0;
   uint8_t max_index = 0;
   for (size_t i = 0; i < 4; i++) {
@@ -111,8 +110,8 @@ int main(int argc, char **argv) {
       max_index = i;
     }
   }
-  printf("Max index: %u\n", max_index);
-  printf("Label: %u\n", labels[0]);
+  printf("Predicted label: %u\n", max_index);
+  printf("True label: %u\n", labels[0]);
 
   free(data);
   return 0;
