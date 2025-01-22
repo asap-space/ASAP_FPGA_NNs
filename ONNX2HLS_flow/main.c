@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 float *read_data(const char *filename, size_t *numFloats) {
   FILE *file = fopen(filename, "rb");
@@ -71,11 +72,17 @@ int main(int argc, char **argv) {
   printf("Hello World\n");
   size_t numFloats = 0;
   size_t numLabels = 0;
+  const char *timestamp = "20171223220000";
+  char labels_filename[256];
+  char data_filename[256];
 
-  uint8_t *labels =
-      read_labels("data_binary/20171209060000/labels_20171209060000.bin", &numLabels);
-  float *data = read_data("data_binary/20171209060000/mms1_dis_dist_fast_20171209060000_0.bin",
-                          &numFloats);
+  snprintf(labels_filename, sizeof(labels_filename),
+           "data_binary/%s/labels_%s.bin", timestamp, timestamp);
+  snprintf(data_filename, sizeof(data_filename),
+           "data_binary/%s/mms1_dis_dist_fast_%s_0.bin", timestamp, timestamp);
+
+  uint8_t *labels = read_labels(labels_filename, &numLabels);
+  float *data = read_data(data_filename, &numFloats);
 
   if (numFloats != 32 * 16 * 32) {
     fprintf(stderr, "Error: Expected 32x16x32 matrix, but got %zu elements\n",
@@ -100,7 +107,13 @@ int main(int argc, char **argv) {
 
   float(*input_tensor)[1][32][16][32] = (float(*)[1][32][16][32])data;
   float(*output_tensor)[4] = (float(*)[4])malloc(4 * sizeof(float));
+
+  clock_t start = clock();
   entry(input_tensor, output_tensor);
+  clock_t end = clock();
+  double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+  printf("Time taken by entry: %f seconds\n", time_spent);
+
   float max = 0;
   uint8_t max_index = 0;
   for (size_t i = 0; i < 4; i++) {
