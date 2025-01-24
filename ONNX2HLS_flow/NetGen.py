@@ -2,7 +2,7 @@ import sys, os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
+from spacepy import pycdf
 
 
 class LogisticNet(nn.Module):
@@ -93,18 +93,25 @@ def test():
     # TO DO
     return
 
-from spacepy import pycdf
+
 def create_dataset():
     # Para testar usar as labels no repositorio do https://bitbucket.org/volshevsky/mmslearning para dezembro
-    cdf = pycdf.CDF('../data/mms1_fpi_fast_l2_dis-dist_20171201180000_v3.4.0.cdf')
-    cdf['mms1_dis_dist_fast']
+    cdf = pycdf.CDF("../data/mms1_fpi_fast_l2_dis-dist_20171201180000_v3.4.0.cdf")
+    cdf["mms1_dis_dist_fast"]
+
 
 def test(net):
-    cdf = pycdf.CDF('../data/mms1_fpi_fast_l2_dis-dist_20171223220000_v3.4.0.cdf')
-    data = torch.from_numpy(cdf['mms1_dis_dist_fast'][0].reshape(1,1,32,16,32))
+    date = "20171223220000"
+    cdf = pycdf.CDF(f"../data/mms1_fpi_fast_l2_dis-dist_{date}_v3.4.0.cdf")
+    data = torch.from_numpy(cdf["mms1_dis_dist_fast"][0].reshape(1, 1, 32, 16, 32))
     output = net(data)
+    max_index = torch.argmax(output, dim=1)
+    cdf = pycdf.CDF("../datasets/labels_fpi_fast_dis_dist_201712.cdf")
+    label = cdf[f"label_mms1_fpi_fast_dis_dist_{date}"]
+    print(f"Predicted: {max_index.item()} - Label: {label[0]}")
     print(output)
     return
+
 
 def load_dataset():
     # TO DO
@@ -129,7 +136,9 @@ def load_pretrained_weights(net, weight_file):
         raise FileNotFoundError(f"Weight file not found: {weight_file}")
 
     try:
-        net.load_state_dict(torch.load(weight_file, weights_only=True, map_location=torch.device('cpu')))
+        net.load_state_dict(
+            torch.load(weight_file, weights_only=True, map_location=torch.device("cpu"))
+        )
     except RuntimeError as e:
         raise RuntimeError(f"Error loading weights: {e}")
 
@@ -255,11 +264,13 @@ def main():
         torch.manual_seed(seed)
 
     print(net)
-    #params = list(net.parameters())
-    #print(params)
+    # params = list(net.parameters())
+    # print(params)
     # Create directory if it does not exist
     os.makedirs("PreTrained_Weights", exist_ok=True)
-    torch.save(net.state_dict(), f"PreTrained_Weights/{net.__class__.__name__}_{seed}.pth")
+    torch.save(
+        net.state_dict(), f"PreTrained_Weights/{net.__class__.__name__}_{seed}.pth"
+    )
     export_ONNX(net)
     test(net)
     exit()
