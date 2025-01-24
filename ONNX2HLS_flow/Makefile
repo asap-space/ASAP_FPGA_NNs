@@ -1,6 +1,7 @@
 NN := Logistic
 SEED := 84
-PRETRAIMED_WEIGHTS := --pretrained_weights ../PreTrained_Weights/$(NN)_$(SEED).pth
+WEIGHTS_FILE := ../PreTrained_Weights/$(NN)Net_$(SEED).pth
+NET_ARGS := --pretrained_weights $(WEIGHTS_FILE) --seed $(SEED)
 
 .PHONY: all convert_model build_model clean ensure_dirs
 
@@ -13,7 +14,7 @@ ensure_dirs:
 	mkdir -p ONNX_model C_model
 
 convert_model:
-	python3 NetGen.py $(PRETRAIMED_WEIGHTS) $(NN)
+	python3 NetGen.py $(NET_ARGS) $(NN)
 
 build_model: convert_model onnx2c/build/onnx2c
 	onnx2c/build/onnx2c ONNX_model/$(NN)Net.onnx > C_model/$(NN)Net.c

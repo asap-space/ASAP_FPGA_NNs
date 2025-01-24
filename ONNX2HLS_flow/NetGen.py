@@ -4,9 +4,6 @@ import torch.nn as nn
 import torch.optim as optim
 
 
-# Setting seeds for reproducibility
-seed = 84
-torch.manual_seed(seed)
 
 class LogisticNet(nn.Module):
     def __init__(self):
@@ -205,7 +202,7 @@ def main():
     based on the command-line argument.
 
     Command-line Usage:
-        python NetGen.py (optional: --pretrained_weights <weight_file>) <model_name>
+        python NetGen.py (optional: --pretrained_weights <weight_file> --seed <random_seed>) <model_name>
 
     Models Available:
         - Baseline
@@ -246,13 +243,16 @@ def main():
         print(f"Using pre-trained weights from: {weight_file}")
         load_pretrained_weights(net, weight_file)
 
-    compare_net = torch.load(weight_file, map_location=torch.device('cpu'))
-    print(compare_net)
+    if "--seed" in sys.argv:
+        seed = int(sys.argv[sys.argv.index("--seed") + 1])
+        # Setting seeds for reproducibility
+        torch.manual_seed(seed)
+
     print(net)
-    params = list(net.parameters())
-    # print(len(params))
-    # print(params[0].size())
-    print(params)
+    #params = list(net.parameters())
+    #print(params)
+    # Create directory if it does not exist
+    os.makedirs("PreTrained_Weights", exist_ok=True)
     torch.save(net.state_dict(), f"PreTrained_Weights/{net.__class__.__name__}_{seed}.pth")
     export_ONNX(net)
     exit()

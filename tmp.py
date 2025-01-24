@@ -1,6 +1,7 @@
 import torch
 
 old_model = 'PreTrained_Weights/models_baseline/model_baseline_s-42.pth'
+old_model2 = '../PreTrained_Weights/models_reduced/model_reduced_s-42.pth'
 new_model = 'PreTrained_Weights/BaselineNet_42.pth'
 
 old_dict = torch.load(old_model, map_location=torch.device('cpu'))

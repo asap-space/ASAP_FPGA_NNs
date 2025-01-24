@@ -125,7 +125,6 @@ FUNC_PREFIX void node__fc1_Gemm( const float A[1][2048], const float B[4][2048],
 	const int N = 4;
 	float alpha = 1.0000000000000000000;
 	float beta = 1.0000000000000000000;
-	float (*C_)[4]  = (float(*)[4])C;
 	for( uint32_t r=0; r<M; r++ )
 		for( uint32_t c=0; c<N; c++ ) {
 			float ABrc = 0;
@@ -134,7 +133,7 @@ FUNC_PREFIX void node__fc1_Gemm( const float A[1][2048], const float B[4][2048],
 				ABrc += A[r][i] * B_el;
 			}
 			float tmp = ABrc * alpha;
-			tmp += C_[0][c] * beta;
+			tmp += C[c] * beta;
 			Y[r][c] = tmp;
 	}
 }
