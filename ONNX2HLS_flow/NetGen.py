@@ -99,6 +99,12 @@ def create_dataset():
     cdf = pycdf.CDF('../data/mms1_fpi_fast_l2_dis-dist_20171201180000_v3.4.0.cdf')
     cdf['mms1_dis_dist_fast']
 
+def test(net):
+    cdf = pycdf.CDF('../data/mms1_fpi_fast_l2_dis-dist_20171223220000_v3.4.0.cdf')
+    data = torch.from_numpy(cdf['mms1_dis_dist_fast'][0].reshape(1,1,32,16,32))
+    output = net(data)
+    print(output)
+    return
 
 def load_dataset():
     # TO DO
@@ -255,6 +261,7 @@ def main():
     os.makedirs("PreTrained_Weights", exist_ok=True)
     torch.save(net.state_dict(), f"PreTrained_Weights/{net.__class__.__name__}_{seed}.pth")
     export_ONNX(net)
+    test(net)
     exit()
 
 
