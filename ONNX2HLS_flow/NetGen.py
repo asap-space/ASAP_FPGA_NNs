@@ -113,15 +113,15 @@ def LogNorm(x, normalization=None):
 
         threshold_high_index = np.where(x > threshold[1])
         x[threshold_high_index] = threshold[1]
-        # Take log10 of data
-        x = np.log10(x)
-        if normalization is None:
-            x -= x.min()
-            x /= x.max()
-        else:
-            x -= normalization[0]
-            x /= normalization[1] - normalization[0]
-        return x
+    # Take log10 of data
+    x = np.log10(x)
+    if normalization is None:
+        x -= x.min()
+        x /= x.max()
+    else:
+        x -= normalization[0]
+        x /= normalization[1] - normalization[0]
+    return x
 
 
 def test(net):
