@@ -1,6 +1,7 @@
 import sys, os
 from spacepy import pycdf
 import numpy as np
+from NetGen import LogNorm
 
 
 #DATE = "20171201180000"
@@ -23,6 +24,8 @@ def check_file_save(file, numpy_data):
 def write_binary_data(date):
     cdf = pycdf.CDF(f"../data/mms1_fpi_fast_l2_dis-dist_{date}_v3.4.0.cdf")
     for i, numpy_data in enumerate(cdf["mms1_dis_dist_fast"]):
+        numpy_data = LogNorm(numpy_data, (-28, -17))
+        numpy_data = np.roll(numpy_data, 16, -2)
         # Save only the values of the numpy data in binary format
         output_file = f"data_binary/{date}/mms1_dis_dist_fast_{date}_{i}.bin"
         with open(output_file, "wb") as file:

@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from spacepy import pycdf
+import numpy as np
 
 
 class LogisticNet(nn.Module):
@@ -100,11 +101,36 @@ def create_dataset():
     cdf["mms1_dis_dist_fast"]
 
 
+def LogNorm(x, normalization=None):
+    if normalization is None:
+        zero_index = np.where(x == 0)
+        min_value = x[np.where(x > 0)].min()
+        x[zero_index] = min_value
+    else:
+        threshold = np.power(10.0, normalization)
+        threshold_low_index = np.where(x < threshold[0])
+        x[threshold_low_index] = threshold[0]
+
+        threshold_high_index = np.where(x > threshold[1])
+        x[threshold_high_index] = threshold[1]
+        # Take log10 of data
+        x = np.log10(x)
+        if normalization is None:
+            x -= x.min()
+            x /= x.max()
+        else:
+            x -= normalization[0]
+            x /= normalization[1] - normalization[0]
+        return x
+
+
 def test(net):
     date = "20171223220000"
     cdf = pycdf.CDF(f"../data/mms1_fpi_fast_l2_dis-dist_{date}_v3.4.0.cdf")
-    data = torch.from_numpy(cdf["mms1_dis_dist_fast"][0].reshape(1, 1, 32, 16, 32))
-    output = net(data)
+    inputTensor = LogNorm(cdf["mms1_dis_dist_fast"][0], (-28, -17))
+    inputTensor = np.roll(inputTensor, 16, -2)
+    inputTensor = torch.from_numpy(inputTensor.reshape(1, 1, 32, 16, 32))
+    output = net(inputTensor)
     max_index = torch.argmax(output, dim=1)
     cdf = pycdf.CDF("../datasets/labels_fpi_fast_dis_dist_201712.cdf")
     label = cdf[f"label_mms1_fpi_fast_dis_dist_{date}"]
