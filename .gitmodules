@@ -1,3 +1,9 @@
 [submodule "onnx2c"]
-	path = HLS_flow/onnx2c
+	path = HLS/onnx2c
 	url = git@github.com:kraiskil/onnx2c.git
+[submodule "FINN/finn"]
+	path = FINN/finn
+	url = git@github.com:Xilinx/finn.git
+[submodule "VitisAI/Vitis-AI"]
+	path = VitisAI/Vitis-AI
+	url = git@github.com:Xilinx/Vitis-AI.git
