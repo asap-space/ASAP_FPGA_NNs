@@ -1,0 +1,11 @@
+onnx
+onnxscript
+onnxruntime
+torch
+torchvision
+pytorch_lightning
+matplotlib
+brevitas 
+requests
+pandas
+spacepy
