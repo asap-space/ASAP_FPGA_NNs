@@ -1,0 +1,17 @@
+{
+  "FMPadding_rtl_0": 33540,
+  "ConvolutionInputGenerator_rtl_0": 33542,
+  "MVAU_hls_0": 24576,
+  "FMPadding_rtl_1": 8580,
+  "ConvolutionInputGenerator_rtl_1": 18695,
+  "MVAU_hls_1": 32768,
+  "FMPadding_rtl_2": 2244,
+  "ConvolutionInputGenerator_rtl_2": 18972,
+  "MVAU_hls_2": 32768,
+  "FMPadding_rtl_3": 612,
+  "ConvolutionInputGenerator_rtl_3": 19568,
+  "MVAU_hls_3": 32768,
+  "FMPadding_rtl_4": 180,
+  "ConvolutionInputGenerator_rtl_4": 20928,
+  "MVAU_hls_4": 32768
+}

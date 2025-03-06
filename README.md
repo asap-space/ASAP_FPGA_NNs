@@ -8,6 +8,9 @@ pip install onnx onnxscript onnxruntime torch torchvision matplotlib brevitas
 pip install requests pandas spacepy # For data
 ```
 
+# Useful commands
+rsync -r <source_dir> <dest_dir>
+
 # References
 ## Jonah Ekelund et al. Paper
 ```

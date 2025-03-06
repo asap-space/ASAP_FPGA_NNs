@@ -1,0 +1,8 @@
+{
+    "lib": "libvart-dpu-runner.so",
+    "filename": "zcu104_CNet.xmodel",
+    "kernel": [
+        "subgraph_CNetPlusScalar_simple_noback__CNetPlusScalar_simple_noback_Conv2d_conv1__ret_3"
+    ],
+    "target": "DPUCZDX8G_ISA1_B4096"
+}

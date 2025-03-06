@@ -1,0 +1,8 @@
+{
+    "lib": "libvart-dpu-runner.so",
+    "filename": "zcu104_vaemodel1.xmodel",
+    "kernel": [
+        "subgraph_vaemodel1__encoder_0_bias_new"
+    ],
+    "target": "DPUCZDX8G_ISA1_B4096"
+}
