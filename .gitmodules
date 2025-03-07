@@ -7,3 +7,9 @@
 [submodule "VitisAI/Vitis-AI"]
 	path = VitisAI/Vitis-AI
 	url = git@github.com:Xilinx/Vitis-AI.git
+[submodule "PYNQ/PYNQ"]
+	path = PYNQ/PYNQ
+	url = git@github.com:Xilinx/PYNQ.git
+[submodule "PYNQ/DPU-PYNQ"]
+	path = PYNQ/DPU-PYNQ
+	url = git@github.com:Xilinx/DPU-PYNQ.git
