@@ -21,16 +21,9 @@ int main(int argc, char **argv) {
   double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
   printf("Time taken by entry: %f seconds\n", time_spent);
 
-  float max = 0;
-  uint8_t max_index = 0;
-  for (size_t i = 0; i < 4; i++) {
+  for (size_t i = 0; i < 12; i++) {
     printf("Output %zu: %f\n", i, (*output_tensor)[i]);
-    if ((*output_tensor)[i] > max) {
-      max = (*output_tensor)[i];
-      max_index = i;
-    }
   }
-  printf("Predicted: %u - Label: %u\n", max_index, labels[0]);
 
   free(data);
   return 0;
