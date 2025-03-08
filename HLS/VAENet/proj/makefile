@@ -1,8 +1,8 @@
 # Copyright (C) 2022 Xilinx, Inc
 # SPDX-License-Identifier: BSD-3-Clause
 
-overlay_name := base
-design_name := base
+overlay_name := vaemodel1
+design_name := vaemodel1
 
 all: hls_ip block_design bitstream check_timing
 	@echo
