@@ -3,9 +3,11 @@
 
 # Rebuild HLS IP from source
 set current_dir [pwd]
-cd ../vae_ip/
-set item "VAENet"
-if {[catch { glob -directory solution1/impl/ip/ *.zip} zip_file]} {
+set source_dir "../vae_ip"
+set item "vaemodel1_hls"
+set solution_dir "${source_dir}/${item}/solution1"
+cd $source_dir
+if {[catch { glob -directory ${solution_dir}/impl/ip/ *.zip} zip_file]} {
 # Build IP only if a packaged IP does not exist
     puts "Building $item IP"
     exec vitis_hls -f script.tcl
@@ -16,7 +18,7 @@ if {[catch { glob -directory solution1/impl/ip/ *.zip} zip_file]} {
 unset zip_file
 # Testing the built IP
 puts "Checking $item"
-set fd [open ${item}/solution1/syn/report/${item}_csynth.rpt r]
+set fd [open ${solution_dir}/syn/report/${item}_csynth.rpt r]
 set timing_flag 0
 set latency_flag 0
 while { [gets $fd line] >= 0 } {

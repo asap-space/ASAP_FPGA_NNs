@@ -1,7 +1,6 @@
 #include "vaemodel1_hls.cpp"
 #include <cstdlib>
 #include <stddef.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
