@@ -4,7 +4,7 @@
 
 # Rebuild HLS IP from source
 set current_dir [pwd]
-set source_dir "../vae_ip"
+set source_dir "../hls"
 set item "vaemodel1_hls"
 set top_module "entry"
 set solution_dir "${source_dir}/${item}/solution1"
