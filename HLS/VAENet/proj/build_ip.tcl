@@ -1,5 +1,6 @@
 # Copyright (C) 2022 Xilinx, Inc
 # SPDX-License-Identifier: BSD-3-Clause
+# Edited by Pedro Antunes
 
 # Rebuild HLS IP from source
 set current_dir [pwd]
@@ -18,7 +19,11 @@ if {[catch { glob -directory ${solution_dir}/impl/ip/ *.zip} zip_file]} {
 unset zip_file
 # Testing the built IP
 puts "Checking $item"
-set fd [open ${solution_dir}/syn/report/${item}_csynth.rpt r]
+# Replace the report file opening with error checking
+if {[catch {set fd [open ${solution_dir}/syn/report/${item}_csynth.rpt r]} err]} {
+    puts "ERROR: Cannot open report file: $err"
+    exit 1
+}
 set timing_flag 0
 set latency_flag 0
 while { [gets $fd line] >= 0 } {
@@ -33,7 +38,7 @@ while { [gets $fd line] >= 0 } {
       set period [regexp -all -inline {[0-9]*\.[0-9]*} $line]
       lassign $period target estimated uncertainty
       if {$target < $estimated} {
-          puts "ERROR: Estimated clock period $estimated > target $target."
+          puts "ERROR: Estimated clock period $estimated > target $target. (Estimated: $estimated, Target: $target)"
           puts "ERROR: Revise $item to be compatible with vitis_hls."
           exit 1
       }
@@ -50,7 +55,7 @@ while { [gets $fd line] >= 0 } {
       set interval [regexp -all -inline {[0-9]*\.*[0-9]*} $line]
       lassign $interval lc_min lc_max la_min la_max achieved target
       if {$achieved != $target} {
-          puts "ERROR: Achieved II $achieved != target $target."
+          puts "ERROR: Achieved II $achieved != target $target. (Achieved: $achieved, Target: $target)"
           puts "ERROR: Revise $item to be compatible with vitis_hls."
           exit 1
       }
@@ -58,10 +63,12 @@ while { [gets $fd line] >= 0 } {
   }
 # Testing ends
   if [string match {== Utilization Estimates} $line]  { 
-      unset timing_flag latency_flag period interval
+      unset timing_flag latency_flag period interval target estimated uncertainty lc_min lc_max la_min la_max achieved
       break
   }
 }
+# At the end of testing, before restoring the directory, close the file:
+close $fd
 unset fd
 cd $current_dir
 puts "HLS IP builds complete"
