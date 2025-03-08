@@ -3,3 +3,24 @@
 data/
 # Generated files
 *.onnx
+# Vivado and Vitis generated files and folders
+*.jou
+*.log
+*.str
+*.bin
+*.rpt
+*.html
+*.xml
+*.xpr
+*.xsa
+*.ltx
+*.runs/
+*.sdk/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.cache/
+*.webtalk/
+*.srcs/
+*.ipdefs/
+*/solution1/
