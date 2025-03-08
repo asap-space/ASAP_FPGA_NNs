@@ -6,6 +6,7 @@
 set current_dir [pwd]
 set source_dir "../vae_ip"
 set item "vaemodel1_hls"
+set top_module "entry"
 set solution_dir "${source_dir}/${item}/solution1"
 cd $source_dir
 if {[catch { glob -directory ${solution_dir}/impl/ip/ *.zip} zip_file]} {
@@ -20,7 +21,7 @@ unset zip_file
 # Testing the built IP
 puts "Checking $item"
 # Replace the report file opening with error checking
-if {[catch {set fd [open ${solution_dir}/syn/report/${item}_csynth.rpt r]} err]} {
+if {[catch {set fd [open ${solution_dir}/syn/report/${top_module}_csynth.rpt r]} err]} {
     puts "ERROR: Cannot open report file: $err"
     exit 1
 }
