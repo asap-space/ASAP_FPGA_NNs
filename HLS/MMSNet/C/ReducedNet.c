@@ -212,7 +212,6 @@ static union tensor_union_0 tu0;
 union tensor_union_1 {
 float tensor__pol1_MaxPool_output_0[1][1][7][7][7];
 float tensor__fc1_Gemm_output_0[1][128];
-float tensor__fc2_Gemm_output_0[1][4];
 };
 static union tensor_union_1 tu1;
 
@@ -401,37 +400,12 @@ FUNC_PREFIX void node__fc2_Gemm( const float A[1][128], const float B[4][128], c
 	}
 }
 
-/*
- * Operand:           Softmax
- * Name in ONNX file: /act2/Softmax
- */
-FUNC_PREFIX void node__act2_Softmax( const float input[1][4], float output[1][4] )
-{
-	/* Softmax 13 (TF, pytorch style)
-	 * axis = 1
-	 */
-	for( uint32_t i0=0; i0<1; i0++ ) {
-		float max = -INFINITY;
-		for( uint32_t i1=0; i1<4; i1++ ) {
-			max = max>input[i0][i1] ? max :input[i0][i1];
-		};
-		float sum = 0.0;
-		for( uint32_t i1=0; i1<4; i1++ ) {
-			sum += expf(input[i0][i1] - max);
-		};
-		for( uint32_t i1=0; i1<4; i1++ ) {
-			output[i0][i1] = expf(input[i0][i1] - max)/sum;
-		};
-	}
-}
 
-
-void entry(const float tensor_input[1][1][32][16][32], float tensor_13[1][4]){
+void entry(const float tensor_input[1][1][32][16][32], float tensor_output[1][4]){
 	node__cv1_Conv( tensor_input, tensor_cv1_weight, tensor_cv1_bias, tu0.tensor__cv1_Conv_output_0);
 	node__pol1_MaxPool( tu0.tensor__cv1_Conv_output_0, tu1.tensor__pol1_MaxPool_output_0);
 	node__Flatten( tu1.tensor__pol1_MaxPool_output_0, tu0.tensor__Flatten_output_0);
 	node__fc1_Gemm( tu0.tensor__Flatten_output_0, tensor_fc1_weight, tensor_fc1_bias, tu1.tensor__fc1_Gemm_output_0);
 	node__act1_Relu( tu1.tensor__fc1_Gemm_output_0, tu0.tensor__act1_Relu_output_0);
-	node__fc2_Gemm( tu0.tensor__act1_Relu_output_0, tensor_fc2_weight, tensor_fc2_bias, tu1.tensor__fc2_Gemm_output_0);
-	node__act2_Softmax( tu1.tensor__fc2_Gemm_output_0, tensor_13);
+	node__fc2_Gemm( tu0.tensor__act1_Relu_output_0, tensor_fc2_weight, tensor_fc2_bias, tensor_output);
 }
