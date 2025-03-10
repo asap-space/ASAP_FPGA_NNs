@@ -147,17 +147,6 @@ def load_dataset():
 
 
 def load_pretrained_weights(net, weight_file):
-    """
-    Loads pre-trained weights into a PyTorch model.
-
-    Args:
-        net (torch.nn.Module): The PyTorch model to load the weights into.
-        weight_file (str): The file path to the pre-trained weights file.
-
-    Raises:
-        FileNotFoundError: If the weight file does not exist.
-        RuntimeError: If the weight file is not compatible with the model.
-    """
     if not os.path.exists(weight_file):
         raise FileNotFoundError(f"Weight file not found: {weight_file}")
 
@@ -170,43 +159,6 @@ def load_pretrained_weights(net, weight_file):
 
 
 def export_ONNX(model):
-    """
-    Exports a PyTorch model to the ONNX format.
-
-    Args:
-        model (torch.nn.Module): The PyTorch model to be exported.
-                                 The model must be compatible with ONNX export.
-
-    Workflow:
-        1. Creates a dummy input tensor of shape `(1, 1, 32, 16, 32)` with `float32` data type.
-        2. Exports the model to an ONNX file named after the model's class, stored in the
-           "ONNX_model" directory.
-        3. Configures input names for the ONNX model as `["input"]`.
-        4. Uses the `torch.onnx.export` function for the conversion, with the `dynamo` option disabled.
-
-    ONNX Export Details:
-        - File Path: "ONNX_model/<model_class_name>.onnx"
-        - Input Names: `["input"]`
-        - Exporter Type: Controlled by the `dynamo` parameter (currently set to `False`).
-
-    Note:
-        Ensure that the "ONNX_model" directory exists before calling this function,
-        or the export will fail.
-
-    Example:
-        from your_module import MyModel
-        model = MyModel()
-        export_ONNX(model)
-
-    Raises:
-        RuntimeError: If the model cannot be exported due to unsupported operations or configuration issues.
-        FileNotFoundError: If the output directory does not exist.
-
-    Dependencies:
-        - PyTorch (`torch`)
-        - ONNX Runtime (optional, for testing the exported model)
-
-    """
     tensor_x = torch.rand((1, 1, 32, 16, 32), dtype=torch.float32)
     torch.onnx.export(
         model,
@@ -218,19 +170,6 @@ def export_ONNX(model):
 
 
 def usage(possible_NN):
-    """
-    Prints usage instructions for the script.
-
-    Args:
-        possible_NN (iterable): A list or iterable containing the names of the possible models
-                                that can be selected (e.g., ["Baseline", "Reduced", "Logistic"]).
-
-    Example:
-        usage(["Baseline", "Reduced", "Logistic"])
-        # Output:
-        # Usage: python NetGen.py (optional: --pretrained_weights <weight_file>) <model_name>
-        # Available models: Baseline, Reduced, Logistic
-    """
     print(
         f"Usage: python NetGen.py (optional: --pretrained_weights <weight_file>) <model_name>"
     )
@@ -238,33 +177,6 @@ def usage(possible_NN):
 
 
 def main():
-    """
-    The main function of the script. It selects and initializes a specific neural network model
-    based on the command-line argument.
-
-    Command-line Usage:
-        python NetGen.py (optional: --pretrained_weights <weight_file> --seed <random_seed>) <model_name>
-
-    Models Available:
-        - Baseline
-        - Reduced
-        - Logistic
-
-    Steps:
-        1. Checks the command-line arguments to ensure a valid model name is provided.
-        2. Dynamically selects and initializes the corresponding model.
-        3. Prints the selected model and its instance.
-
-    Exits:
-        - Exits with code -1 if no valid model name is provided.
-
-    Example:
-        Command:
-            python script.py Logistic
-        Output:
-            Selected model: Logistic
-            LogisticNet instance created
-    """
     possible_NN = {
         "Baseline": BaselineNet,
         "Reduced": ReducedNet,

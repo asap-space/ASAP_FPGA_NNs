@@ -3,6 +3,7 @@
 data/
 # Generated files
 *.onnx
+*.out
 # Vivado and Vitis generated files and folders
 *.jou
 *.log

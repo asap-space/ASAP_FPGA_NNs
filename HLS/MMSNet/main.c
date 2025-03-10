@@ -1,4 +1,4 @@
-#include "HLS_model/LogisticNet.c"
+#include "C/LogisticNet.c"
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
