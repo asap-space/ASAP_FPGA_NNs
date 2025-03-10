@@ -1,6 +1,8 @@
 .DS_Store
 # Directories with generated files
 data/
+deploy*
+.ipynb_checkpoints/
 # Generated files
 *.onnx
 *.out
