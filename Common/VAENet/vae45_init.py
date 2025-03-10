@@ -88,7 +88,7 @@ print("Min/Max:", dataset[0][0].min(), dataset[0][0].max())
 #-----------------------------------------------------------------------------#
 
 ## Import working model / N.B.
-import vae_model_ext1 as vaemodel
+import vae_model_relu as vaemodel
 # import vae_model_new as vaemodel
 model = vaemodel.vaemodel1()
 
