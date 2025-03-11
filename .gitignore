@@ -26,4 +26,5 @@ deploy*
 *.webtalk/
 *.srcs/
 *.ipdefs/
-*/solution1/
+*solution1*
+*.app
