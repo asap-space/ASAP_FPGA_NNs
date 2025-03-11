@@ -27,4 +27,5 @@ deploy*
 *.srcs/
 *.ipdefs/
 *solution1*
+*project_1*
 *.app

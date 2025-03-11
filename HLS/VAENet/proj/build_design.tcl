@@ -1,6 +1,6 @@
 # Set project name and target device (modify these variables as needed)
 set project_name "vae_hls_project"
-set device_part "xczu7ev-ffvc1156-2-i"
+set device_part "xczu7ev-ffvc1156-2-e"
 set hls_ip_repo_path "[pwd]/../hls/vaemodel1_hls/solution1/impl/ip"
 
 # Create project
