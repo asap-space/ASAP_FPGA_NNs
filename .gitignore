@@ -6,6 +6,7 @@ deploy*
 # Generated files
 *.onnx
 *.out
+*.npy
 # Vivado and Vitis generated files and folders
 *.jou
 *.log

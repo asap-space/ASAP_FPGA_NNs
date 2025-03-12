@@ -16,9 +16,9 @@ class VAEOverlay(DefaultOverlay):
         in_buffer = allocate(shape=(input_data.shape), dtype=np.float32)
         out_buffer = allocate(self.vae_out_shape, dtype=np.float32)
         # Load the weights file
-        weights_path_Conv_71 = os.path.join(os.path.dirname(__file__), "tensor_onnx__Conv_71.npy")
+        weights_path_Conv_71 = os.path.join(os.path.dirname(__file__), "weights_Conv_71.npy")
         weights_Conv_71 = np.load(weights_path_Conv_71)
-        weights_path_Conv_74 = os.path.join(os.path.dirname(__file__), "tensor_onnx__Conv_74.npy")
+        weights_path_Conv_74 = os.path.join(os.path.dirname(__file__), "weights_Conv_74.npy")
         weights_Conv_74 = np.load(weights_path_Conv_74)
         # Allocate memory for weights
         weights_buffer_Conv_71 = allocate(shape=weights_Conv_71.shape, dtype=np.float32)
