@@ -13,3 +13,5 @@ apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Cl
 make_wrapper -files [get_files /home/pantunes/sandbox/FPGA_ASAP/HLS/VAENet/proj/project_1/project_1.srcs/sources_1/bd/design_1/design_1.bd] -top
 add_files -norecurse /home/pantunes/sandbox/FPGA_ASAP/HLS/VAENet/proj/project_1/project_1.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
 launch_runs synth_1 -jobs 32
+launch_runs impl_1 -jobs 32
+launch_runs impl_1 -to_step write_bitstream -jobs 32

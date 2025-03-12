@@ -30,3 +30,5 @@ deploy*
 *solution1*
 *project_1*
 *.app
+*.hwh
+*.bit

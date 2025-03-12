@@ -1,9 +1,0 @@
-{
-    "lib": "libvart-dpu-runner.so",
-    "filename": "zcu104_vaemodel1.xmodel",
-    "kernel": [
-        "subgraph_vaemodel1__1044(MergeDataReshape)",
-        "subgraph_vaemodel1__mu_bias"
-    ],
-    "target": "DPUCZDX8G_ISA1_B4096"
-}

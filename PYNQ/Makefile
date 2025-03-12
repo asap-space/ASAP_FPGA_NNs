@@ -6,6 +6,9 @@ NN ?= VAENet
 # Define the source directories
 COMMON_DIR = ../Common/$(NN)
 VitisAI_DIR = ../VitisAI/$(NN)
+HLS_DIR = ../HLS/$(NN)
+FINN_DIR = ../FINN/$(NN)
+DPU_PYNQ_DIR = ../DPU-PYNQ/boards/zcu104
 
 # Define the deploy directory
 DEPLOY_DIR = deploy_ZCU104
@@ -16,22 +19,49 @@ ZIP_FILE = deploy_$(NN)_ZCU104.zip
 # Default target
 all: deploy zip
 
-# Create the deploy directory and copy the contents based on the NN variable
-deploy:
-	@echo "Creating deploy directory and copying contents of $(NN)..."
+# HLS target to prepare HLS files
+hls:
+	@echo "Preparing HLS files for $(NN)..."
 	@mkdir -p $(DEPLOY_DIR)
 	@if [ "$(NN)" = "VAENet" ]; then \
-		cp -r $(NN)/* $(DEPLOY_DIR)/; \
-		cp $(COMMON_DIR)/pre_trained_w* $(DEPLOY_DIR)/; \
-		cp -r $(COMMON_DIR)/dataset $(DEPLOY_DIR)/; \
+		cp $(HLS_DIR)/design_1.hwh $(DEPLOY_DIR)/; \
+		cp $(HLS_DIR)/design_1_wrapper.bit $(DEPLOY_DIR)/; \
+		cp $(HLS_DIR)/vae_hls_driver.py $(DEPLOY_DIR)/; \
+		cp $(HLS_DIR)/weights_Conv_71.npy $(DEPLOY_DIR)/; \
+		cp $(HLS_DIR)/weights_Conv_74.npy $(DEPLOY_DIR)/; \
+	fi
+
+# VitisAI target to prepare Vitis AI files
+vitisai:
+	@echo "Preparing Vitis AI files for $(NN)..."
+	@mkdir -p $(DEPLOY_DIR)/vitisai_dpu
+	@cp $(DPU_PYNQ_DIR)/dpu.bit $(DEPLOY_DIR)/vitisai_dpu
+	@cp $(DPU_PYNQ_DIR)/dpu.hwh $(DEPLOY_DIR)/vitisai_dpu
+	@cp $(DPU_PYNQ_DIR)/dpu.xclbin $(DEPLOY_DIR)/vitisai_dpu
+	@if [ "$(NN)" = "VAENet" ]; then \
 		cp $(VitisAI_DIR)/V2_5/zcu104_vaemodel1.xmodel $(DEPLOY_DIR)/; \
-	elif [ "$(NN)" = "CNet" ]; then \
-		cp -r $(NN)/* $(DEPLOY_DIR)/; \
-	elif [ "$(NN)" = "MMSNet" ]; then \
-		cp -r $(NN)/* $(DEPLOY_DIR)/; \
-	else \
-		echo "Unknown NN value: $(NN)"; \
-		exit 1; \
+	fi
+
+# FINN target to prepare FINN files
+finn:
+	@echo "Preparing FINN files for $(NN)..."
+	@mkdir -p $(DEPLOY_DIR)/finn_deploy
+	@if [ "$(NN)" = "VAENet" ]; then \
+		cp $(FINN_DIR)/output_final/bitfile/* $(DEPLOY_DIR)/finn_deploy/; \
+		cp $(FINN_DIR)/output_final/driver/driver_base.py $(DEPLOY_DIR)/finn_driver.py; \
+		cp -r $(FINN_DIR)/output_final/driver/finn $(DEPLOY_DIR)/; \
+		cp -r $(FINN_DIR)/output_final/driver/qonnx $(DEPLOY_DIR)/; \
+	fi
+
+# Create deploy target to use the new targets
+deploy: hls vitisai finn
+	@echo "Creating deploy directory for $(NN)..."
+	@mkdir -p $(DEPLOY_DIR)
+	@cp -r $(NN)/* $(DEPLOY_DIR)/
+	@if [ "$(NN)" = "VAENet" ]; then \
+		cp $(COMMON_DIR)/pre_trained_w* $(DEPLOY_DIR)/; \
+		mkdir -p $(DEPLOY_DIR)/dataset/vae45_Br_imgs/; \
+		find $(COMMON_DIR)/dataset/vae45_Br_imgs/ -type f | shuf -n 1000 | xargs -I{} cp {} $(DEPLOY_DIR)/dataset/vae45_Br_imgs/; \
 	fi
 
 # Zip the deploy directory
@@ -44,4 +74,4 @@ clean:
 	@echo "Cleaning up..."
 	@rm -rf $(DEPLOY_DIR) $(ZIP_FILE)
 
-.PHONY: all deploy zip clean
+.PHONY: all deploy zip clean hls vitisai finn
