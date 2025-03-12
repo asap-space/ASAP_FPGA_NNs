@@ -27,11 +27,9 @@ class VAEOverlay(Overlay):
         # Copy input data to in_buffer
         np.copyto(in_buffer, input_data)
         # Run the accelerator
-        start = time.time()
         self.entry_0.register_map.CTRL.AP_START=1
         while not self.entry_0.register_map.CTRL.AP_DONE:
             pass
-        print(time.time()-start)
         # Copy output data to output_data
         output_data = np.copy(out_buffer)
         return output_data
