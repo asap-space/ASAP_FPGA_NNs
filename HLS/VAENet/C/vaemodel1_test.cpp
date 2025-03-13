@@ -10,7 +10,9 @@
 int main(int argc, char **argv) {
   printf("Hello World\n");
   float *data = (float *)malloc(3 * 128 * 256 * sizeof(float));
-  memset(data, 1, 3 * 128 * 256 * sizeof(float));
+  for (size_t i = 0; i < 3 * 128 * 256; i++) {
+    data[i] = (float)1;
+  }
 
   float(*input_tensor)[3][128][256] = (float(*)[3][128][256])data;
   float(*output_tensor)[12] = (float(*)[12])malloc(12 * sizeof(float));
