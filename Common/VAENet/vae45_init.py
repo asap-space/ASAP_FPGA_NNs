@@ -19,7 +19,7 @@ pl.seed_everything()
 #-----------------------------------------------------------------------------#
 
 ## DIRECTORIES with datasets
-img_path = '/data/leuven/355/vsc35587/SHARP_data/VAE45/'
+img_path = 'dataset'
 
 
 # Dataset with Transformation
@@ -93,7 +93,7 @@ import vae_model_relu as vaemodel
 model = vaemodel.vaemodel1()
 
 # model file name
-fname = 'vae45_Br_beta45_lt064_bz064_splt80_ep1000_lr5e-4'
+fname = model.__class__.__name__
 
 # TRAINING 
 logger = pl.loggers.TensorBoardLogger('lightning_logs', 'vaelog/'+fname)
@@ -106,7 +106,7 @@ trainer.fit(model, train_dataloaders=trainloader, val_dataloaders=testloader, ck
 #-----------------------------------------------------------------------------#
 
 # SAVE Trained MODEL
-save_path ='/data/leuven/355/vsc35587/SHARP_data/vae45_models/'
+save_path ='./'
 torch.save(model.state_dict(), save_path+'state_'+fname+'.st')
 torch.save(model, save_path+fname+'.pth')
 print('Model saved:'+fname)

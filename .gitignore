@@ -3,6 +3,8 @@
 data/
 deploy*
 .ipynb_checkpoints/
+*__pycache__/
+*lightning_logs/
 # Generated files
 *.onnx
 *.out
