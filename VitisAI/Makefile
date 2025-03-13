@@ -27,8 +27,7 @@ copy_notebook:
 	@echo "Copying $(COMMON_DIR) data to $(VITIS_AI_DIR)..."
 	@if [ "$(NN)" = "VAENet" ]; then \
 		cp $(COMMON_DIR)/pre_trained_w* $(NOTEBOOK_DEST_DIR)/; \
-		mkdir -p $(NOTEBOOK_DEST_DIR)/dataset/vae45_Br_imgs/; \
-		find $(COMMON_DIR)/dataset/vae45_Br_imgs/ -type f | shuf -n 1000 | xargs -I{} cp {} $(NOTEBOOK_DEST_DIR)/dataset/vae45_Br_imgs/; \
+		cp -r $(COMMON_DIR)/dataset $(NOTEBOOK_DEST_DIR); \
 	fi
 	@echo "Copy complete."
 

@@ -4,6 +4,8 @@ onnxruntime
 torch
 torchvision
 pytorch_lightning
+tensorboard
+tensorboardX
 matplotlib
 brevitas 
 requests
