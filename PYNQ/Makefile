@@ -47,10 +47,10 @@ finn:
 	@echo "Preparing FINN files for $(NN)..."
 	@mkdir -p $(DEPLOY_DIR)/finn_bitstream
 	@if [ "$(NN)" = "VAENet" ]; then \
-		cp $(FINN_DIR)/output_final/bitfile/* $(DEPLOY_DIR)/finn_bitstream/; \
-		cp $(FINN_DIR)/output_final/driver/driver_base.py $(DEPLOY_DIR)/finn_driver.py; \
-		cp -r $(FINN_DIR)/output_final/driver/finn $(DEPLOY_DIR)/; \
-		cp -r $(FINN_DIR)/output_final/driver/qonnx $(DEPLOY_DIR)/; \
+		cp $(FINN_DIR)/deploy/bitfile/* $(DEPLOY_DIR)/finn_bitstream/; \
+		cp $(FINN_DIR)/deploy/driver/driver_base.py $(DEPLOY_DIR)/finn_driver.py; \
+		cp -r $(FINN_DIR)/deploy/driver/finn $(DEPLOY_DIR)/; \
+		cp -r $(FINN_DIR)/deploy/driver/qonnx $(DEPLOY_DIR)/; \
 	fi
 
 # Create deploy target to use the new targets
