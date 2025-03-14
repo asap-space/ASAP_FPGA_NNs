@@ -11,10 +11,11 @@ class EspertaPyTorch(nn.Module):
         self.threshold = threshold
         
         # Define linear layer with fixed weights
-        self.linear = nn.Linear(in_features=4, out_features=1, bias=False)
+        self.linear = nn.Linear(in_features=4, out_features=1, bias=True)
         
         with torch.no_grad():
-            self.linear.weight = nn.Parameter(torch.tensor(weights, dtype=torch.float32).view(1, -1))
+            self.linear.weight = nn.Parameter(torch.tensor(weights[1:], dtype=torch.float32).view(1, -1))
+            self.linear.bias = nn.Parameter(torch.tensor(weights[0], dtype=torch.float32))
         
         # Freeze parameters
         for param in self.parameters():
