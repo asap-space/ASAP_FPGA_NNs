@@ -7,6 +7,7 @@ deploy*
 *lightning_logs/
 # Generated files
 *.onnx
+*.onnx.data
 *.out
 *.npy
 # Vivado and Vitis generated files and folders

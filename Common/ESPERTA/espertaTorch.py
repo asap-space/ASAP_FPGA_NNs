@@ -29,7 +29,7 @@ class EspertaPyTorch(nn.Module):
         probabilities = torch.sigmoid(self.linear(x))
         
         # Apply threshold and convert to binary
-        return (probabilities > self.threshold).float()
+        return (probabilities > self.threshold)
 
 def ConfMatrix(predictions, true_labels):
     return confusion_matrix(true_labels, predictions)
