@@ -11,7 +11,7 @@ class EspertaPyTorch(nn.Module):
         self.threshold = threshold
         
         # Define linear layer with fixed weights
-        self.linear = nn.Linear(in_features=4, out_features=1, bias=True)
+        self.linear = nn.Linear(in_features=3, out_features=1, bias=True)
         
         with torch.no_grad():
             self.linear.weight = nn.Parameter(torch.tensor(weights[1:], dtype=torch.float32).view(1, -1))
@@ -22,10 +22,7 @@ class EspertaPyTorch(nn.Module):
             param.requires_grad_(False)
 
     def forward(self, x):
-        """Directly returns binary predictions with thresholding"""
-        if not isinstance(x, torch.Tensor):
-            x = torch.tensor(x, dtype=torch.float32)
-            
+        """Directly returns binary predictions with thresholding"""            
         # Compute probabilities
         probabilities = torch.sigmoid(self.linear(x))
         
