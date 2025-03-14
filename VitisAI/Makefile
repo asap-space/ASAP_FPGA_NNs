@@ -6,8 +6,7 @@ NN ?= VAENet
 # Paths
 VITIS_AI_DIR ?= Vitis-AI
 NOTEBOOK_SRC := $(NN)/Gen_ISA.ipynb
-NOTEBOOK_DEST_DIR := $(VITIS_AI_DIR)/work_dir
-NOTEBOOK_DEST := $(NOTEBOOK_DEST_DIR)/Gen_ISA.ipynb
+NOTEBOOK_DEST_DIR := $(VITIS_AI_DIR)/work_dir/$(NN)
 COMMON_DIR := ../Common/$(NN)
 
 .PHONY: run clean
@@ -23,11 +22,14 @@ copy_notebook:
 		exit 1; \
 	fi
 	@mkdir -p $(NOTEBOOK_DEST_DIR)
-	@cp $(NOTEBOOK_SRC) $(NOTEBOOK_DEST)
+	@cp $(NOTEBOOK_SRC) $(NOTEBOOK_DEST_DIR)
 	@echo "Copying $(COMMON_DIR) data to $(VITIS_AI_DIR)..."
 	@if [ "$(NN)" = "VAENet" ]; then \
 		cp $(COMMON_DIR)/pre_trained_w* $(NOTEBOOK_DEST_DIR)/; \
 		cp -r $(COMMON_DIR)/dataset $(NOTEBOOK_DEST_DIR); \
+	fi
+	@if [ "$(NN)" = "ESPERTA" ]; then \
+		cp $(COMMON_DIR)/espertaTorch.py $(NOTEBOOK_DEST_DIR)/; \
 	fi
 	@echo "Copy complete."
 
