@@ -1,18 +1,23 @@
 # Copyright (C) 2022 Xilinx, Inc
 # SPDX-License-Identifier: BSD-3-Clause
+# Edited by Pedro Antunes
+if {$argc < 1} {
+    puts "Error: Project name not provided as an argument"
+    puts "Usage: vitis_hls -f script.tcl -tclargs <project_name>"
+    exit 1
+}
 
-set overlay_name "base"
-set design_name "base"
+# Get the project name from the arguments
+set overlay_name [lindex $argv 0]
 
 # open block design
 open_project ./${overlay_name}/${overlay_name}.xpr
-open_bd_design ./${overlay_name}/${overlay_name}.srcs/sources_1/bd/${design_name}/${design_name}.bd
+open_bd_design ./${overlay_name}/${overlay_name}.srcs/sources_1/bd/${overlay_name}/${overlay_name}.bd
 
 # Add top wrapper and xdc files
-make_wrapper -files [get_files ./${overlay_name}/${overlay_name}.srcs/sources_1/bd/${design_name}/${design_name}.bd] -top
-add_files -norecurse ./${overlay_name}/${overlay_name}.srcs/sources_1/bd/${design_name}/hdl/${design_name}_wrapper.v
-set_property top ${design_name}_wrapper [current_fileset]
-import_files -fileset constrs_1 -norecurse ./vivado/constraints/${overlay_name}.xdc
+make_wrapper -files [get_files ./${overlay_name}/${overlay_name}.srcs/sources_1/bd/${overlay_name}/${overlay_name}.bd] -top
+add_files -norecurse ./${overlay_name}/${overlay_name}.srcs/sources_1/bd/${overlay_name}/hdl/${overlay_name}_wrapper.v
+set_property top ${overlay_name}_wrapper [current_fileset]
 update_compile_order -fileset sources_1
 
 # set platform properties
@@ -31,7 +36,10 @@ write_hw_platform -include_bit -force ./${overlay_name}.xsa
 validate_hw_platform ./${overlay_name}.xsa
 
 # move and rename bitstream to final location
-file copy -force ./${overlay_name}/${overlay_name}.runs/impl_1/${design_name}_wrapper.bit ${overlay_name}.bit
-
-# copy hwh files
-file copy -force ./${overlay_name}/${overlay_name}.gen/sources_1/bd/${design_name}/hw_handoff/${design_name}.hwh ${overlay_name}.hwh
+if {[file exists ./${overlay_name}/${overlay_name}.runs/impl_1/design_1_wrapper.bit]} {
+    file copy -force ./${overlay_name}/${overlay_name}.runs/impl_1/${overlay_name}_wrapper.bit ${overlay_name}.bit
+    file copy -force ./${overlay_name}/${overlay_name}.gen/sources_1/bd/${overlay_name}/hw_handoff/${overlay_name}.hwh ${overlay_name}.hwh
+    puts "Bitstream and HWH files copied to current directory"
+} else {
+    puts "Bitstream generation failed"
+}

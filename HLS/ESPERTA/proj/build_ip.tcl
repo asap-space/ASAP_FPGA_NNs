@@ -1,14 +1,24 @@
 # Copyright (C) 2022 Xilinx, Inc
 # SPDX-License-Identifier: BSD-3-Clause
 # Edited by Pedro Antunes
+# Check if project name name is provided as an argument
+if {$argc < 1} {
+    puts "Error: Project name not provided as an argument"
+    puts "Usage: vitis_hls -f script.tcl -tclargs <project_name>"
+    exit 1
+}
+
+# Get the project name from the arguments
+set overlay_name [lindex $argv 0]
 
 # Rebuild HLS IP from source
 set current_dir [pwd]
 set source_dir "../hls"
-set item "ESPERTA_hls"
+set item "${overlay_name}_hls"
 set top_module "entry"
 set solution_dir "${source_dir}/${item}/solution1"
 cd $source_dir
+
 if {[catch { glob -directory ${solution_dir}/impl/ip/ *.zip} zip_file]} {
 # Build IP only if a packaged IP does not exist
     puts "Building $item IP"

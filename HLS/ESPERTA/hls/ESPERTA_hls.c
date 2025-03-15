@@ -628,8 +628,8 @@ FUNC_PREFIX void node_node_Concat_21( const bool input_0[1][1], const bool input
 
 
 void entry(const float tensor_input[1][3], bool tensor_output[1][6]){
-	#pragma HLS INTERFACE m_axi port=tensor_input depth=3 offset=slave
-	#pragma HLS INTERFACE m_axi port=tensor_output depth=6 offset=slave
+	#pragma HLS INTERFACE s_axilite port=tensor_input
+	#pragma HLS INTERFACE s_axilite port=tensor_output
 	#pragma HLS INTERFACE s_axilite port=return
 	#pragma HLS INLINE recursive
 	node_node_Gemm_0( tensor_input, tensor_models_0_linear_weight, tensor_models_0_linear_bias, tu0.tensor_linear);

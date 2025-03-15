@@ -1,8 +1,8 @@
 # Copyright (C) 2022 Xilinx, Inc
 # SPDX-License-Identifier: BSD-3-Clause
+# Edited by Pedro Antunes
 
 overlay_name := ESPERTA
-design_name := ESPERTA
 
 all: hls_ip block_design bitstream check_timing
 	@echo
@@ -10,16 +10,16 @@ all: hls_ip block_design bitstream check_timing
 	@echo
 
 hls_ip:
-	vivado -mode batch -source build_ip.tcl -notrace
+	vivado -notrace -mode batch -source build_ip.tcl -tclargs $(overlay_name)
 
 block_design:
-	vivado -mode batch -source $(overlay_name).tcl -notrace
+	vivado -notrace -mode batch -source build_design.tcl -tclargs $(overlay_name)
 
 bitstream:
-	vivado -mode batch -source build_bitstream.tcl -notrace
+	vivado -notrace -mode batch -source build_bitstream.tcl -tclargs $(overlay_name)
 
 check_timing:
-	vivado -mode batch -source check_timing.tcl -notrace
+	vivado -notrace -mode batch -source check_timing.tcl -tclargs $(overlay_name)
 
 clean:
-	rm -rf $(overlay_name) *.jou *.log NA .Xil ../hls/$(design_name)_hls ../hls/vitis_hls.log
+	rm -rf $(overlay_name) *.jou *.log NA .Xil ../hls/$(overlay_name)_hls ../hls/vitis_hls.log
