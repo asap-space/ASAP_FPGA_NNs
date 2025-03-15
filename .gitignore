@@ -35,3 +35,4 @@ deploy*
 *.app
 *.hwh
 *.bit
+*.gen

@@ -1,62 +1,44 @@
-# Set project name and target device (modify these variables as needed)
-set project_name "vae_hls_project"
+# Check if project name name is provided as an argument
+if {$argc < 1} {
+    puts "Error: Project name not provided as an argument"
+    puts "Usage: vitis_hls -f script.tcl -tclargs <project_name>"
+    exit 1
+}
+
+# Get the project name from the arguments and set the device part
+set overlay_name [lindex $argv 0]
+set current_dir [pwd]
 set device_part "xczu7ev-ffvc1156-2-e"
-set hls_ip_repo_path "[pwd]/../hls/vaemodel1_hls/solution1/impl/ip"
-
+set board_part "xilinx.com:zcu104:part0:1.1"
 # Create project
-create_project ${project_name} ./${project_name} -part ${device_part}
-
+create_project $overlay_name  $current_dir/$overlay_name -part $device_part
+set_property board_part $board_part [current_project]
 # Create block design
-create_bd_design "design_1"
+create_bd_design "${overlay_name}"
 update_compile_order -fileset sources_1
 
+set ps_unit "zynq_ultra_ps_e"
 # Add Zynq Processing System
-create_bd_cell -type ip -vlnv xilinx.com:ip:zynq_ultra_ps_e:3.4 zynq_ultra_ps_e_0
-apply_bd_automation -rule xilinx.com:bd_rule:zynq_ultra_ps_e -config {apply_board_preset "1" }  [get_bd_cells zynq_ultra_ps_e_0]
+create_bd_cell -type ip -vlnv xilinx.com:ip:${ps_unit}:3.4 ${ps_unit}_0
+apply_bd_automation -rule xilinx.com:bd_rule:${ps_unit} -config {apply_board_preset "1" }  [get_bd_cells ${ps_unit}_0]
 
 
+set hls_ip_repo_path [file join $current_dir ".." "hls" "${overlay_name}_hls" "solution1" "impl" "ip"]
 # Add IP repository and scan for IPs
-puts ${hls_ip_repo_path}
-set_property  ip_repo_paths  /home/pantunes/sandbox/FPGA_ASAP/HLS/VAENet/hls/vaemodel1_hls/solution1/impl/ip [current_project]
+set_property  ip_repo_paths $hls_ip_repo_path [current_project]
 update_ip_catalog
+create_bd_cell -type ip -vlnv xilinx.com:hls:entry:1.0 entry_0
 
-# Add HLS IP (modify the IP name according to your HLS export)
-set hls_ip_name "entry"
-create_bd_cell -type ip -vlnv xilinx.com:hls:${hls_ip_name}:1.0 ${hls_ip_name}_0
-apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/zynq_ultra_ps_e_0/M_AXI_HPM0_LPD} Slave {/entry_0/s_axi_control} ddr_seg {Auto} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins entry_0/s_axi_control]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/${ps_unit}_0/M_AXI_HPM0_FPD} Slave {/entry_0/s_axi_control} ddr_seg {Auto} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins entry_0/s_axi_control]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {/${ps_unit}_0/pl_clk0 (100 MHz)} Clk_xbar {/${ps_unit}_0/pl_clk0 (100 MHz)} Master {/${ps_unit}_0/M_AXI_HPM1_FPD} Slave {/entry_0/s_axi_control} ddr_seg {Auto} intc_ip {/ps8_0_axi_periph} master_apm {0}}  [get_bd_intf_pins ${ps_unit}_0/M_AXI_HPM1_FPD]
+set_property -dict [list CONFIG.PSU__MAXIGP0__DATA_WIDTH {32} CONFIG.PSU__MAXIGP1__DATA_WIDTH {32}] [get_bd_cells zynq_ultra_ps_e_0]
 
-# Enable HP0 Port on Zynq
-set_property -dict [list CONFIG.PSU__USE__S_AXI_GP2 {1}] [get_bd_cells zynq_ultra_ps_e_0]
-apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/zynq_ultra_ps_e_0/pl_clk0 (96 MHz)} Clk_slave {Auto} Clk_xbar {Auto} Master {/entry_0/m_axi_gmem} Slave {/zynq_ultra_ps_e_0/S_AXI_HP0_FPD} ddr_seg {Auto} intc_ip {New AXI SmartConnect} master_apm {0}}  [get_bd_intf_pins zynq_ultra_ps_e_0/S_AXI_HP0_FPD]
+connect_bd_net [get_bd_pins entry_0/interrupt] [get_bd_pins ${ps_unit}_0/pl_ps_irq0]
+
+
 
 # Create HDL wrapper
-make_wrapper -files [get_files /home/pantunes/sandbox/FPGA_ASAP/HLS/VAENet/proj/project_1/project_1.srcs/sources_1/bd/design_1/design_1.bd] -top
-add_files -norecurse /home/pantunes/sandbox/FPGA_ASAP/HLS/VAENet/proj/project_1/project_1.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
-set_property top design_1_wrapper [current_fileset]
-update_compile_order -fileset sources_1
-
-# set platform properties
-set_property platform.default_output_type "sd_card" [current_project]
-set_property platform.design_intent.embedded "true" [current_project]
-set_property platform.design_intent.server_managed "false" [current_project]
-set_property platform.design_intent.external_host "false" [current_project]
-set_property platform.design_intent.datacenter "false" [current_project]
-
-# call implement
-launch_runs impl_1 -to_step write_bitstream -jobs 32
-wait_on_run impl_1
-
-# generate xsa
-write_hw_platform -include_bit -force ./${overlay_name}.xsa
-validate_hw_platform ./${overlay_name}.xsa
-
-# Copy bitstream and hwh files to current directory for easy access
-if {[file exists ./${project_name}/${project_name}.runs/impl_1/design_1_wrapper.bit]} {
-    file copy -force ./${overlay_name}/${overlay_name}.runs/impl_1/${design_name}_wrapper.bit ${overlay_name}.bit
-    file copy -force ./${overlay_name}/${overlay_name}.gen/sources_1/bd/${design_name}/hw_handoff/${design_name}.hwh ${overlay_name}.hwh
-    puts "Bitstream and HWH files copied to current directory"
-} else {
-    puts "Bitstream generation failed"
-}
+make_wrapper -files [get_files $current_dir/$overlay_name/${overlay_name}.srcs/sources_1/bd/${overlay_name}/${overlay_name}.bd] -top
+add_files -norecurse add_files -norecurse $current_dir/$overlay_name/${overlay_name}.gen/sources_1/bd/${overlay_name}/hdl/${overlay_name}_wrapper.v
 
 puts "Script completed"
