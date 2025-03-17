@@ -13,28 +13,22 @@ class CNetPlusScalar(nn.Module):
     def __init__(self):
         super().__init__()
         self.pool = nn.MaxPool2d(2, 2) 
-        self.conv1 = nn.Conv2d(1, 3, 5) 
-        self.conv2 = nn.Conv2d(3, 3, 3) 
-        self.conv3 = nn.Conv2d(3, 3, 3) 
-        self.conv4 = nn.Conv2d(3, 3, 3)
-        self.conv5 = nn.Conv2d(3, 3, 3)
-        self.conv6 = nn.Conv2d(3, 3, 3)
-        self.conv7 = nn.Conv2d(3, 3, 3)
-        self.fc1 = nn.Linear(3 * 2 * 2, 30)
-        self.fc2 = nn.Linear(30, 30)
-        self.fc3 = nn.Linear(30+1, 1)
+        self.conv1 = nn.Conv2d(1, 6, 5) 
+        self.conv2 = nn.Conv2d(6, 16, 5) 
+        self.conv3 = nn.Conv2d(16, 32, 5) 
+        self.conv4 = nn.Conv2d(32, 32, 5)
+        self.fc1 = nn.Linear(32 * 28 * 28, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84+1, 1)
 
-    def forward(self, image, background_scalar):
+    def forward(self, image, scalar):
         x = self.pool(F.relu(self.conv1(image))) 
         x = self.pool(F.relu(self.conv2(x))) 
         x = self.pool(F.relu(self.conv3(x))) 
         x = self.pool(F.relu(self.conv4(x))) 
-        x = self.pool(F.relu(self.conv5(x)))
-        x = self.pool(F.relu(self.conv6(x)))
-        x = self.pool(F.relu(self.conv7(x)))
         x = torch.flatten(x, 1) # flatten all dimensions except batch
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        x = torch.cat((x, background_scalar), dim=1) # adding the scalar value
+        x = torch.cat((x, scalar), dim=1) # adding the scalar value
         x = self.fc3(x)
         return x
