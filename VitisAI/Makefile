@@ -31,6 +31,10 @@ copy_notebook:
 	@if [ "$(NN)" = "ESPERTA" ]; then \
 		cp $(COMMON_DIR)/espertaTorch.py $(NOTEBOOK_DEST_DIR)/; \
 	fi
+	@if [ "$(NN)" = "CNet" ]; then \
+		cp $(COMMON_DIR)/CNetPlusScalar.py $(NOTEBOOK_DEST_DIR)/; \
+		cp $(COMMON_DIR)/pre_trained_w.pt $(NOTEBOOK_DEST_DIR)/; \
+	fi
 	@echo "Copy complete."
 
 # Run the docker container
