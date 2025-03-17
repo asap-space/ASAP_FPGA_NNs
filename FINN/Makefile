@@ -28,6 +28,9 @@ copy_notebook:
 		cp $(COMMON_DIR)/pre_trained_w* $(NOTEBOOK_DEST_DIR); \
 		cp -r $(COMMON_DIR)/dataset $(NOTEBOOK_DEST_DIR); \
 	fi
+	@if [ "$(NN)" = "CNet" ]; then \
+		cp $(COMMON_DIR)/pre_trained_w.pt $(NOTEBOOK_DEST_DIR); \
+	fi
 	@echo "Copy complete."
 
 # Run the docker container
