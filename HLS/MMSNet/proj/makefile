@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Edited by Pedro Antunes
 
-overlay_name := LogisticNet
+overlay_name := ReducedNet
 
 all: hls_ip block_design bitstream check_timing
 	@echo
