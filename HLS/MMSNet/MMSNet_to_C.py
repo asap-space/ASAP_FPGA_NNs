@@ -36,9 +36,9 @@ def main():
     model2 = ReducedNet()
     model3 = BaselineNet()
 
-    model1.load_state_dict(torch.load(f'{COMMON_PATH}/PreTrained_Weights/LogisticNet_84.pth'))
-    model2.load_state_dict(torch.load(f'{COMMON_PATH}/PreTrained_Weights/ReducedNet_42.pth'))
-    model3.load_state_dict(torch.load(f'{COMMON_PATH}/PreTrained_Weights/BaselineNet_336.pth'))
+    model1.load_state_dict(torch.load(f'{COMMON_PATH}/PreTrained_Weights/LogisticNet_84.pth', weights_only=True))
+    model2.load_state_dict(torch.load(f'{COMMON_PATH}/PreTrained_Weights/ReducedNet_42.pth', weights_only=True))
+    model3.load_state_dict(torch.load(f'{COMMON_PATH}/PreTrained_Weights/BaselineNet_336.pth', weights_only=True))
 
     tensor_x = torch.rand((1, 1, 32, 16, 32), dtype=torch.float32)
     for model in [model1, model2, model3]:

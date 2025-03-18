@@ -3,7 +3,7 @@
 // (TODO: print creation date here )
 
 // ONNX model:
-// produced by pytorch, version 2.6.0
+// produced by pytorch, version 2.5.1
 // ONNX IR version: 17
 // Model documentation: 
 /*
