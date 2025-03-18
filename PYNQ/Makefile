@@ -49,8 +49,20 @@ ESPERTA:
 	@echo "Preparing Vitis AI files... NOT SUPPORTED"
 	@echo "Preparing FINN files... NOT SUPPORTED"
 
+# 
+CNet:
+	@echo "Preparing $@ files..."
+	@mkdir -p $(DEPLOY_DIR)
+	cp -r $@/* $(DEPLOY_DIR)/
+	cp $(COMMON_DIR)/CNetPlusScalar.py $(DEPLOY_DIR)/
+	@echo "Preparing Vitis AI files..."
+	cp $(VitisAI_DIR)/zcu104_CNetPlusScalar.xmodel $(DEPLOY_DIR)
+	@echo "Preparing HLS files... NOT SUPPORTED"
+	@echo "Preparing Vitis AI files... NOT SUPPORTED"
+	@echo "Preparing FINN files... NOT SUPPORTED"
+
 # Create deploy target to use the new targets
-deploy: VAENet ESPERTA
+deploy: VAENet ESPERTA CNet
 	@echo "Creating deploy directory..."
 	@mkdir -p $(BASE_DEPLOY_DIR)/vitisai_bitstream
 	cp $(DPU_PYNQ_DIR)/dpu.bit $(BASE_DEPLOY_DIR)/vitisai_bitstream
