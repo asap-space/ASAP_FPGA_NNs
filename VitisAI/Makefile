@@ -41,7 +41,7 @@ copy_notebook:
 run_docker:
 	@echo "Running Vitis-AI in Docker..."
 	@cd $(VITIS_AI_DIR) && ./docker_run.sh xilinx/vitis-ai-cpu:2.5
-	@cp $(NOTEBOOK_DEST_DIR)/$(NN)/zcu104_*.xmodel $(NN)
+	@cp $(NOTEBOOK_DEST_DIR)/zcu104_*.xmodel $(NN)
 
 # Clean up
 clean:
