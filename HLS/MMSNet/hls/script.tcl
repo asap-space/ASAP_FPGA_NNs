@@ -4,7 +4,7 @@
 
 open_project LogisticNet_hls
 set_top entry
-add_files LogisticNet_hls.cpp
+add_files LogisticNet_hls.c
 add_files -tb LogisticNet_hls_test.cpp
 open_solution "solution1"
 #set_property board_part xilinx.com:zcu104:part0:1.1 [current_project]

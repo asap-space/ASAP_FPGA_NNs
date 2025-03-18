@@ -140,6 +140,10 @@ FUNC_PREFIX void node__fc1_Gemm( const float A[1][2048], const float B[4][2048],
 
 
 void entry(const float tensor_input[1][1][32][16][32], float tensor_output[1][4]){
+	#pragma HLS INTERFACE m_axi port=tensor_input depth=16384 offset=slave
+	#pragma HLS INTERFACE s_axilite port=tensor_output
+	#pragma HLS INTERFACE s_axilite port=return
+	#pragma HLS INLINE recursive
 	node__pol1_MaxPool( tensor_input, tu0.tensor__pol1_MaxPool_output_0);
 	node__Flatten( tu0.tensor__pol1_MaxPool_output_0, tu1.tensor__Flatten_output_0);
 	node__fc1_Gemm( tu1.tensor__Flatten_output_0, tensor_fc1_weight, tensor_fc1_bias, tensor_output);
