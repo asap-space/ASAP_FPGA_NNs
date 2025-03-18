@@ -55,6 +55,7 @@ CNet:
 	@mkdir -p $(DEPLOY_DIR)
 	cp -r $@/* $(DEPLOY_DIR)/
 	cp $(COMMON_DIR)/CNetPlusScalar.py $(DEPLOY_DIR)/
+	cp $(COMMON_DIR)/pre_trained_w.pt $(DEPLOY_DIR)/
 	@echo "Preparing Vitis AI files..."
 	cp $(VitisAI_DIR)/zcu104_CNetPlusScalar.xmodel $(DEPLOY_DIR)
 	@echo "Preparing HLS files... NOT SUPPORTED"
@@ -79,4 +80,4 @@ clean:
 	@echo "Cleaning up..."
 	@rm -rf $(BASE_DEPLOY_DIR) $(ZIP_FILE)
 
-.PHONY: all deploy zip clean ESPERTA VAENet
+.PHONY: all deploy zip clean ESPERTA VAENet CNet
