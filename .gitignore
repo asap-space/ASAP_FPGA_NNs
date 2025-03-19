@@ -36,3 +36,4 @@ deploy*
 *.hwh
 *.bit
 *.gen
+*.Xil
