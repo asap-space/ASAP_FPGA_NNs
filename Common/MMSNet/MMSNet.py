@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+from torch.utils.data import Dataset
 
 class LogisticNet(nn.Module):
     def __init__(self):
@@ -56,3 +56,15 @@ class BaselineNet(nn.Module):
         out = self.fc2(out)
         #out = self.act2(out)
         return out
+    
+# WIP, right now it is random
+class MMSDataset(Dataset):
+    def __init__(self, num_samples: int):
+        self.data = torch.randn(num_samples, 1, 32, 16, 32)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        data = self.data[idx]
+        return data

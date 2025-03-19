@@ -28,7 +28,7 @@ VAENet:
 	@echo "Preparing HLS files... WIP"
 	@mkdir -p $(DEPLOY_DIR)/hls_bitstream
 	cp $(HLS_DIR)/design_1.hwh $(DEPLOY_DIR)/hls_bitstream
-	cp $(HLS_DIR)/design_1_wrapper.bit $(DEPLOY_DIR)/hls_bitstream
+	cp $(HLS_DIR)/design_1_wrapper.bit $(DEPLOY_DIR)/hls_bitstream/design_1.bit
 	cp $(HLS_DIR)/vae_hls_driver.py $(DEPLOY_DIR)
 	cp $(HLS_DIR)/weights_Conv_71.npy $(DEPLOY_DIR)
 	cp $(HLS_DIR)/weights_Conv_74.npy $(DEPLOY_DIR)
@@ -62,8 +62,26 @@ CNet:
 	@echo "Preparing Vitis AI files... NOT SUPPORTED"
 	@echo "Preparing FINN files... NOT SUPPORTED"
 
+# 
+MMSNet:
+	@echo "Preparing $@ files..."
+	@mkdir -p $(DEPLOY_DIR)
+	cp -r $@/* $(DEPLOY_DIR)/
+	cp $(COMMON_DIR)/MMSNet.py $(DEPLOY_DIR)/
+	cp -r $(COMMON_DIR)/PreTrained_Weights $(DEPLOY_DIR)/
+	@echo "Preparing HLS files..."
+	@mkdir -p $(DEPLOY_DIR)/hls_bitstream
+	cp $(HLS_DIR)/LogisticNet.hwh $(DEPLOY_DIR)/hls_bitstream/
+	cp $(HLS_DIR)/LogisticNet.bit $(DEPLOY_DIR)/hls_bitstream/
+#	cp $(HLS_DIR)/ReducedNet.hwh $(DEPLOY_DIR)/hls_bitstream/
+#	cp $(HLS_DIR)/ReducedNet.bit $(DEPLOY_DIR)/hls_bitstream/
+#	cp $(HLS_DIR)/BaselineNet.hwh $(DEPLOY_DIR)/hls_bitstream/
+#	cp $(HLS_DIR)/BaselineNet.bit $(DEPLOY_DIR)/hls_bitstream/
+	@echo "Preparing Vitis AI files... NOT SUPPORTED"
+	@echo "Preparing FINN files... NOT SUPPORTED"
+
 # Create deploy target to use the new targets
-deploy: VAENet ESPERTA CNet
+deploy: VAENet ESPERTA CNet MMSNet
 	@echo "Creating deploy directory..."
 	@mkdir -p $(BASE_DEPLOY_DIR)/vitisai_bitstream
 	cp $(DPU_PYNQ_DIR)/dpu.bit $(BASE_DEPLOY_DIR)/vitisai_bitstream
@@ -80,4 +98,4 @@ clean:
 	@echo "Cleaning up..."
 	@rm -rf $(BASE_DEPLOY_DIR) $(ZIP_FILE)
 
-.PHONY: all deploy zip clean ESPERTA VAENet CNet
+.PHONY: all deploy zip clean ESPERTA VAENet CNet MMSNet
