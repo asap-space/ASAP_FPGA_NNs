@@ -75,8 +75,8 @@ MMSNet:
 	cp $(HLS_DIR)/LogisticNet.bit $(DEPLOY_DIR)/hls_bitstream/
 	cp $(HLS_DIR)/ReducedNet.hwh $(DEPLOY_DIR)/hls_bitstream/
 	cp $(HLS_DIR)/ReducedNet.bit $(DEPLOY_DIR)/hls_bitstream/
-#	cp $(HLS_DIR)/BaselineNet.hwh $(DEPLOY_DIR)/hls_bitstream/
-#	cp $(HLS_DIR)/BaselineNet.bit $(DEPLOY_DIR)/hls_bitstream/
+	cp $(HLS_DIR)/BaselineNet.hwh $(DEPLOY_DIR)/hls_bitstream/
+	cp $(HLS_DIR)/BaselineNet.bit $(DEPLOY_DIR)/hls_bitstream/
 	@echo "Preparing Vitis AI files... NOT SUPPORTED"
 	@echo "Preparing FINN files... NOT SUPPORTED"
 
