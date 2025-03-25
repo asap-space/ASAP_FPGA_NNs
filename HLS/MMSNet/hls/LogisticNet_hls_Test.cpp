@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
       max_index = i;
     }
   }
-  printf("Predicted: %u - Label: %u\n", max_index, labels[0]);
+  printf("Predicted: %u \n", max_index);
 
   free(data);
   return 0;

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Edited by Pedro Antunes
 
-overlay_name := ReducedNet
+overlay_name := BaselineNet
 
 all: hls_ip block_design bitstream check_timing
 	@echo
