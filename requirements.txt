@@ -11,3 +11,6 @@ brevitas
 requests
 pandas
 spacepy
+tf-keras
+git+https://github.com/fastmachinelearning/hls4ml@main
+netron

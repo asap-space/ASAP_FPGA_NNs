@@ -25,7 +25,8 @@ copy_notebook:
 	@cp $(NOTEBOOK_SRC) $(NOTEBOOK_DEST_DIR)
 	@echo "Copying $(COMMON_DIR) data to $(VITIS_AI_DIR)..."
 	@if [ "$(NN)" = "VAENet" ]; then \
-		cp $(COMMON_DIR)/pre_trained_w* $(NOTEBOOK_DEST_DIR)/; \
+		cp $(COMMON_DIR)/VAE_Encoder.py $(NOTEBOOK_DEST_DIR)/; \
+		cp $(COMMON_DIR)/pre_trained_w_encoder.pt $(NOTEBOOK_DEST_DIR)/; \
 		cp -r $(COMMON_DIR)/dataset $(NOTEBOOK_DEST_DIR); \
 	fi
 	@if [ "$(NN)" = "ESPERTA" ]; then \
