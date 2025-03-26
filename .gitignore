@@ -1,5 +1,40 @@
 .DS_Store
 # Directories with generated files
 data/
+deploy*
+.ipynb_checkpoints/
+*__pycache__/
+*lightning_logs/
+*hls4ml_prj*
 # Generated files
 *.onnx
+*.onnx.data
+*.out
+*.npy
+# Vivado and Vitis generated files and folders
+*.jou
+*.log
+*.str
+*.bin
+*.rpt
+*.html
+*.xml
+*.xpr
+*.xsa
+*.ltx
+*.runs/
+*.sdk/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.cache/
+*.webtalk/
+*.srcs/
+*.ipdefs/
+*solution1*
+*project_1*
+*.app
+*.hwh
+*.bit
+*.gen
+*.Xil
