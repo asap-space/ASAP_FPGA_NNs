@@ -5,6 +5,7 @@ deploy*
 .ipynb_checkpoints/
 *__pycache__/
 *lightning_logs/
+*hls4ml_prj*
 # Generated files
 *.onnx
 *.onnx.data
