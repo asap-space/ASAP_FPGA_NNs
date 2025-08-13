@@ -26,8 +26,6 @@ def main():
     model = vae_encoder()
     model.load_state_dict(torch.load('pre_trained_w_encoder.pt', weights_only=True))
 
-    print("Passed Here!!")
-
     model.eval()
     with torch.no_grad():
         cpu_output = []
@@ -43,6 +41,8 @@ def main():
     output_max = cpu_output.max()
     output_range = output_max - output_min
     print(f"Output range: min={output_min:.6f}, max={output_max:.6f}, difference={output_range:.6f}")
+    print("Output shape:", cpu_output.shape)
+    print("Output:", cpu_output)
 
 if __name__ == "__main__":
     main()
