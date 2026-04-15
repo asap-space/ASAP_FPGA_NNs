@@ -136,7 +136,7 @@ def run_cpu_inference(model, dataloader, recorder=None, plot_every=0):
     count = 0
     with torch.no_grad():
         for image, _ in dataloader:
-            
+            count += 1
             # Start strict timing
             start_t = time.time()
             pred = model(image)
@@ -153,7 +153,6 @@ def run_cpu_inference(model, dataloader, recorder=None, plot_every=0):
                 progress_msg = f"CPU Inference Progress: {count} / {len(dataloader.dataset)} images"
                 plot_input_and_latent(image, latent_z, progress_text=progress_msg)
                 
-            count += 1
             
     # Mark end of execution
     if recorder:
@@ -244,10 +243,10 @@ def plot_input_and_latent(image_tensor, latent_vector, progress_text=None):
     ax2.grid(axis='y', linestyle='--', alpha=0.7)
 
     plt.tight_layout()
-    if progress_text:
-        clear_output(wait=True)
-        print(progress_text)
+    clear_output(wait=True)
     plt.show()
+    if progress_text:
+        print(progress_text)
 
 
 def get_average_power(recorder):
