@@ -6,6 +6,7 @@ deploy*
 *__pycache__/
 *lightning_logs/
 *hls4ml_prj*
+.vscode
 # Generated files
 *.onnx
 *.onnx.data
