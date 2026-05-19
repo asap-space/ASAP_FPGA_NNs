@@ -13,7 +13,11 @@ pip install requests pandas spacepy # For data
 - pip install -r requirements.txt
 
 # References
-## Jonah Ekelund et al. Paper
+## CNetPlusScalar Neural Network
+### George Git Repository
+https://github.com/georgemilosh/PyNets
+## MMS Neural Networks
+### Jonah Ekelund et al. Paper
 ```
 @article{ekelund2024ai,
   title={AI in Space for Scientific Missions: Strategies for Minimizing Neural-Network Model Upload},
@@ -22,8 +26,8 @@ pip install requests pandas spacepy # For data
   year={2024}
 }
 ```
-## Vyacheslav Olshevsky Work
-### Olshevsky et al. Paper
+### Vyacheslav Olshevsky Work
+#### Olshevsky et al. Paper
 ```
 @article{Olshevsky_2021,
    title={Automated Classification of Plasma Regions Using 3D Particle Energy Distributions},
@@ -38,5 +42,5 @@ pip install requests pandas spacepy # For data
    year={2021},
    month=sep }
 ```
-### Git Repository
+#### Git Repository
 `https://bitbucket.org/volshevsky/mmslearning/`
