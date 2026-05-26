@@ -58,6 +58,9 @@ If you use this repository, please cite:
 ```
 
 ## References
+### CNetPlusScalar Neural Network
+*George Git Repository*
+https://github.com/georgemilosh/PyNets
 ### ESPERTA
 ```
 @article{Alberti_2017,
